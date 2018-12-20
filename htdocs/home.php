@@ -228,13 +228,27 @@ require_once 'connect.php';
 <script>
 var slideIndex = 1;
 showSlides(slideIndex);
+var myTimer;
+myTimer = setInterval(function(){plusSlides(1);}, 5000);
 
 function plusSlides(n) {
+  clearInterval(myTimer);
   showSlides(slideIndex += n);
+  if (n = -1){
+    myTimer = setInterval(function(){plusSlides(n + 2);}, 5000);
+  } else {
+    myTimer = setInterval(function(){plusSlides(n + 1);}, 5000);
+  }
 }
 
 function currentSlide(n) {
+  clearInterval(myTimer);
   showSlides(slideIndex = n);
+  if (n = -1){
+    myTimer = setInterval(function(){plusSlides(n + 2);}, 5000);
+  } else {
+    myTimer = setInterval(function(){plusSlides(n + 1);}, 5000);
+  }
 }
 
 function showSlides(n) {
