@@ -166,7 +166,7 @@ $quantity = array($_SESSION["quantity0"],$_SESSION["quantity1"],$_SESSION["quant
 </form>
 
 <?php
-if(isset($_POST['submit'])){
+if(isset($_POST['submit']) && isset($_SESSION["login_user"]) && !empty($_SESSION["login_user"])){
 	$_SESSION["quantity0"] = $_SESSION["quantity0"]+$_POST['quantity0'];
 	$_SESSION["quantity1"] = $_SESSION["quantity1"]+$_POST['quantity1'];
 	$_SESSION["quantity2"] = $_SESSION["quantity2"]+$_POST['quantity2'];
@@ -174,8 +174,8 @@ if(isset($_POST['submit'])){
 	$_SESSION["quantity4"] = $_SESSION["quantity4"]+$_POST['quantity4'];
 	$_SESSION["quantity5"] = $_SESSION["quantity5"]+$_POST['quantity5'];
 
-	header("location: please_confirm.php");
-} 
+	header("location: cart.php");
+}
 ?>
 
 </body>
