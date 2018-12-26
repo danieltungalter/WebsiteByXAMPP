@@ -165,7 +165,13 @@ right: 0;
 		}
 	echo "<tr><th colspan=\"6\"> <font size = \"6\">Total amount: HKD $".$total."</font></th></tr>";
 	echo "</table><br>";
-  echo "<center><button class=\"button\" style=\"vertical-align:middle\" type=\"submit\" name=\"confirm\"><span>Confirm the orders</span></button></center>";
+  
+  if(isset($_SESSION["login_user"]) && !empty($_SESSION["login_user"])){
+    echo "<center><button class=\"button\" style=\"vertical-align:middle\" type=\"submit\" name=\"confirm\"><span>Confirm the orders</span></button></center>";
+  } else {
+    echo "<center><a href=\"login.php\" class=\"button\" style=\"vertical-align:middle\"><span>Please login</span></a></center>";
+  }
+
 	}else{
 		echo "</table><br><br>";
 		echo "<center><font size = \"10\" color=\"#FFFFFF\"> There is no order received.</font></center>";}
@@ -222,7 +228,6 @@ right: 0;
 			}
 		}
 		header("location: confirmed.php");
-
 	}
 
 	?>

@@ -166,7 +166,7 @@ $quantity = array($_SESSION["quantity0"],$_SESSION["quantity1"],$_SESSION["quant
 </form>
 
 <?php
-if(isset($_POST['submit']) && isset($_SESSION["login_user"]) && !empty($_SESSION["login_user"])){
+if(isset($_POST['submit'])){
 	$_SESSION["quantity0"] = $_SESSION["quantity0"]+$_POST['quantity0'];
 	$_SESSION["quantity1"] = $_SESSION["quantity1"]+$_POST['quantity1'];
 	$_SESSION["quantity2"] = $_SESSION["quantity2"]+$_POST['quantity2'];
