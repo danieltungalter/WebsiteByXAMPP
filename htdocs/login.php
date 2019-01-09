@@ -3,17 +3,17 @@
 require_once 'connect.php';
 
 // Define variables and initialize with empty values
-$customer_id = $password = "";
-$customer_id_err = $password_err = $error = "";
+$customer_name = $password = "";
+$customer_name_err = $password_err = $error = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Check if username is empty
-    if(empty(trim($_POST["customer_id"]))){
-        $customer_id_err = 'Please enter customer id.';
+    if(empty(trim($_POST["customer_name"]))){
+        $customer_name_err = 'Please enter your username.';
     } else{
-        $customer_id = trim($_POST["customer_id"]);
+        $customer_name = trim($_POST["customer_name"]);
     }
 
     // Check if password is empty
@@ -23,11 +23,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $password = trim($_POST['password']);
     }
     // Validate credentials
-    if(empty($customer_id_err) && empty($password_err)){
-        $customer_id = mysqli_real_escape_string($link,$_POST['customer_id']);
+    if(empty($customer_name_err) && empty($password_err)){
+        $customer_name = mysqli_real_escape_string($link,$_POST['customer_name']);
 		$mypassword = mysqli_real_escape_string($link,$_POST['password']);
 
-		$sql = "SELECT customer_name,customer_id FROM customer WHERE customer_id = '$customer_id' and password = '$mypassword'";
+		$sql = "SELECT customer_name,customer_id FROM customer WHERE customer_name = '$customer_name' and password = '$mypassword'";
 		//echo $sql;
 		$result = mysqli_query($link,$sql);
 		$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
@@ -66,12 +66,82 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <script src="script.js"></script>
     <meta charset="iso-8859-1">
     <link rel="stylesheet" href="styles/layout.css" type="text/css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; margin: auto;}
-    </style>
 </head>
+
+<style>
+input[type=text], input[type=password], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.btn {
+  width: 95%;
+  font-size: 16px;
+  background-color: #ff9900;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #FF8033;
+}
+
+.help-block{
+  color:red
+}
+
+.header {
+  width: 25%;
+  margin: 50px auto 0px;
+  color: white;
+  background: #ff9900;
+  text-align: center;
+  border: 1px solid #ff9900;
+  border-bottom: none;
+  border-radius: 10px 10px 0px 0px;
+  padding: 20px;
+}
+
+form, .content {
+  width: 25%;
+  margin: 0px auto;
+  padding: 20px;
+  border: 1px solid #B0C4DE;
+  background: white;
+  border-radius: 0px 0px 10px 10px;
+}
+.form-group {
+  margin: 10px 0px 10px 0px;
+}
+.form-group label,span {
+  display: block;
+  text-align: left;
+  margin: 3px;
+}
+.form-group input {
+  height: 30px;
+  width: 93%;
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
+</style>
+
 <body>
   <div id='cssmenu'>
   <ul>
@@ -80,7 +150,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   		if (isset($_SESSION["login_user"]) && !empty($_SESSION["login_user"])) {
   		echo "<a><H1>Welcome! ".$_SESSION["login_user"].".</H1></a>";
   	} else {
-  		echo "<a>Please login in the account!</a>";
+  		echo "<a><H1>Please login in the account!</H1></a>";
   	}
   		?>
      </li>
@@ -103,14 +173,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   </header>
 </div>
 
-	<div class="container">
+	<div class="header">
         <h1>Login</h1>
-        <p>Please fill in your credentials to login.</p>
+
+      </div>
+
+      <div class="container">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($customer_id_err)) ? 'has-error' : ''; ?>">
-                <label>Customer ID</label>
-                <input type="text" name="customer_id"class="form-control" value="<?php echo $customer_id; ?>">
-                <span class="help-block"><?php echo $customer_id_err; ?></span>
+            <div class="form-group <?php echo (!empty($customer_name_err)) ? 'has-error' : ''; ?>">
+                <label>Username</label>
+                <input type="text" name="customer_name"class="form-control" value="<?php echo $customer_name; ?>">
+                <span class="help-block"><?php echo $customer_name_err; ?></span>
             </div>
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                 <label>Password</label>
@@ -121,8 +194,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <span class="help-block"><?php echo $error; ?></span>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
+                <button type="submit" class="btn btn-primary" name="Login"> Login</button>
             </div>
+            <p>
+  		Not yet a member? <a href="register.php">Sign up</a>
+  	</p>
         </form>
     </div>
 </body>

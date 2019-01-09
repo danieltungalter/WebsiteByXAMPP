@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機: 127.0.0.1
--- 產生時間： 2018 年 12 月 17 日 11:11
+-- 產生時間： 2019 年 01 月 09 日 17:37
 -- 伺服器版本: 10.1.31-MariaDB
 -- PHP 版本： 7.2.4
 
@@ -29,20 +29,24 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `customer` (
-  `customer_name` varchar(50) DEFAULT NULL,
-  `customer_id` char(8) NOT NULL,
-  `phone_no` varchar(15) DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
-  `password` char(8) DEFAULT NULL
+  `customer_id` int(11) NOT NULL,
+  `customer_name` varchar(50) NOT NULL,
+  `phone_no` varchar(15) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` char(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- 資料表的匯出資料 `customer`
 --
 
-INSERT INTO `customer` (`customer_name`, `customer_id`, `phone_no`, `email`, `password`) VALUES
-('Retailer1', 'C0000001', '+852 20000001', 'retailer1@example.com', '11111111'),
-('Retailer2', 'C0000002', '+852 20000002', 'retailer2@example.com', '22222222');
+INSERT INTO `customer` (`customer_id`, `customer_name`, `phone_no`, `email`, `password`) VALUES
+(1, 'Retailer1', '+852 20000001', 'retailer1@example.com', '11111111'),
+(2, 'Retailer2', '+852 20000002', 'retailer2@example.com', '22222222'),
+(3, 'daniel', '98765432', 'daniel@gmail.com', 'daniel'),
+(4, 'daniel001', '487329476', 'daniel001@gmail.com', 'daniel001'),
+(5, 'daniel002', '983645234', 'daniel002@gmail.com', 'daniel002'),
+(6, 'daniel003', '48329674', 'daniel003@gmail.com', 'daniel003');
 
 -- --------------------------------------------------------
 
@@ -124,6 +128,16 @@ INSERT INTO `product` (`product_id`, `product_description`, `stock`, `unit_price
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`customer_id`);
+
+--
+-- 在匯出的資料表使用 AUTO_INCREMENT
+--
+
+--
+-- 使用資料表 AUTO_INCREMENT `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
