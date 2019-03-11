@@ -159,6 +159,10 @@ require_once 'connect.php';
     </div>
     <nav>
       <ul>
+        <form action="search_result.php" id="searchform" method="get" class="searchbox-container">
+        <input type="text" id="searchbox" name="searchbox" class="searchbox" />
+        <input type="submit" class="searchbox-btn" value="Search" />
+        <input type="hidden" name="action" value="search" />
         <li><a href="home.php">Home</a></li>
         <li><a href="product.php">Products</a></li>
         <li><a href="cart.php">Cart</a></li>

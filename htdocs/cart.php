@@ -155,9 +155,16 @@ right: 0;
 	if($have_order){
 		$total = 0;
 		while($row = $result->fetch_row()) {
+      $max_stock_sql = "SELECT stock from product WHERE product_id = 'P000000".($x+1)."'";
+      $max_stock_result = $link->query($max_stock_sql);
+      $max_stock_row = $max_stock_result->fetch_row();
 			if($quantity[$x]>0){
       $image = $row[4];
-			echo "<tr><td>".$row[0]."</td><td>"."<img src='$image' style=\'width:128px;height:128px;\'>"."</td><td>".$row[1]."</td><td>".$quantity[$x]."</td><td>HKD $".$row[3]."</td><td>HKD $".$row[3]*$quantity[$x].".00</td><td><center><input type=\"submit\" name=\"delete".$x."\" value = \"Delete!\" /></center></td></tr>";
+			echo "<tr><td>".$row[0]."</td><td>"."<img src='$image' style=\'width:128px;height:128px;\'>"."</td>
+      <td>".$row[1]."</td>
+      <td><input type=\"number\" name=\"quantity".$x."\" id=\"quantity".$x."\" min=\"1\" max=\"".($max_stock_row[0]-$quantity[$x])."\" value=\"".$quantity[$x]."\"><input type=\"submit\" name=\"update".$x."\" value = \"Update\" /></td>
+      <td>HKD $".$row[3]."</td><td>HKD $".$row[3]*$quantity[$x].".00</td>
+      <td><center><input type=\"submit\" name=\"delete".$x."\" value = \"Delete!\" /></center></td></tr>";
 			$total_array[$x] = $row[3]*$quantity[$x];
 			}
 			$total = $total+ ($row[3]*$quantity[$x]);
@@ -165,7 +172,7 @@ right: 0;
 		}
 	echo "<tr><th colspan=\"6\"> <font size = \"6\">Total amount: HKD $".$total."</font></th></tr>";
 	echo "</table><br>";
-  
+
   if(isset($_SESSION["login_user"]) && !empty($_SESSION["login_user"])){
     echo "<center><button class=\"button\" style=\"vertical-align:middle\" type=\"submit\" name=\"confirm\"><span>Confirm the orders</span></button></center>";
   } else {
@@ -204,7 +211,7 @@ right: 0;
 	}
 
 	if(isset($_POST['confirm'])){
-		$sql1 = "SELECT MAX(`order_id`) FROM order_detail";
+		$sql1 = "SELECT MAX('order_id') FROM order_detail";
 		$result1 = $link->query($sql1);
 		$row1 = $result1->fetch_row();
 		if(is_null($row1[0])){
@@ -214,7 +221,7 @@ right: 0;
 
 		for($y=0;$y<count($quantity);$y++){
 			if($quantity[$y]>0){
-				$sql = "INSERT INTO `order_detail` (`order_id`, `customer_id`, `product_id`, `quantity`, `total_price`, `order_date`) VALUES ('".$index."','".$_SESSION["user_id"]."','P000000".($y+1)."','".$quantity[$y]."','".$total_array[$y]."',CURRENT_DATE())";
+				$sql = "INSERT INTO 'order_detail' ('order_id', 'customer_id', 'product_id', 'quantity', 'total_price', 'order_date') VALUES ('".$index."','".$_SESSION["user_id"]."','P000000".($y+1)."','".$quantity[$y]."','".$total_array[$y]."',CURRENT_DATE())";
 				$link->query($sql);
 
 				$temp_sql1 = "SELECT stock from product WHERE product_id = 'P000000".($y+1)."'";

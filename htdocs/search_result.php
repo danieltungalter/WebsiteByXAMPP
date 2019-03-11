@@ -53,6 +53,10 @@ $quantity = array($_SESSION["quantity0"],$_SESSION["quantity1"],$_SESSION["quant
     </div>
     <nav>
       <ul>
+				<form action="search_result.php" id="searchform" method="get" class="searchbox-container">
+				<input type="text" id="searchbox" name="searchbox" class="searchbox" />
+				<input type="submit" class="searchbox-btn" value="Search" />
+				<input type="hidden" name="action" value="search" />
         <li><a href="home.php">Home</a></li>
         <li><a href="product.php">Products</a></li>
         <li><a href="cart.php">Cart</a></li>
@@ -140,7 +144,11 @@ $quantity = array($_SESSION["quantity0"],$_SESSION["quantity1"],$_SESSION["quant
 </thead>
 <tbody>
 <?php
-	$sql = "SELECT * FROM product";
+		$query = $_GET['searchbox'];// gets value sent over search form
+    $query = htmlspecialchars($query);// changes characters used in html to their equivalents, for example: < to &gt;
+    //$query = mysql_real_escape_string($query);// makes sure nobody uses SQL injection
+    $sql =  "SELECT * FROM product WHERE (product_description LIKE '%".$query."%')";
+
 	$result = $link->query($sql);
 
 	if ($result->num_rows > 0) {
@@ -150,14 +158,11 @@ $quantity = array($_SESSION["quantity0"],$_SESSION["quantity1"],$_SESSION["quant
 			$max_stock_result = $link->query($max_stock_sql);
 			$max_stock_row = $max_stock_result->fetch_row();
 			$image = $row[4];
-			echo "<tr><td>".$row[0]."</td><td>"."<img src='$image' style=\'width:128px;height:128px;\'>"."</td>
-			<td>".$row[1]."</td>
-			<td>".($row[2]-$quantity[$x])."</td>
-			<td>$".$row[3]."</td><td><input type=\"number\" name=\"quantity".$x."\" id=\"quantity".$x."\" min=\"0\" max=\"".($max_stock_row[0]-$quantity[$x])."\" value=\"0\"></td></tr>";
+			echo "<tr><td>".$row[0]."</td><td>"."<img src='$image' style=\'width:128px;height:128px;\'>"."</td><td>".$row[1]."</td><td>".($row[2]-$quantity[$x])."</td><td>$".$row[3]."</td><td><input type=\"number\" name=\"quantity".$x."\" id=\"quantity".$x."\" min=\"0\" max=\"".($max_stock_row[0]-$quantity[$x])."\" value=\"0\"></td></tr>";
 			$x++;
 		}
 	} else {
-    echo "<center><font size = \"10\" color=\"#FFFFFF\"> There is no result.</font></center>";
+		echo "<center><font size = \"10\" color=\"#FFFFFF\"> There is no result.</font></center>";
 }
 
 ?>
